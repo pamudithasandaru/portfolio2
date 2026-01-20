@@ -1,6 +1,6 @@
 /* Hero Section Styles */
 .hero {
-  height: 700px;
+  height: 800px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +33,7 @@
 }
 
 .hero-container {
-  max-width: 1400px;
+  max-width: 100%;
   width: 100%;
   padding: 0 4rem;
   position: relative;
@@ -45,6 +45,7 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: 6rem;
   align-items: center;
+  padding-left: 120px;
 }
 
 /* Left Section - Text */
@@ -53,7 +54,7 @@
 }
 
 .hero-greeting {
-  font-size: 4rem;
+  font-size: 5rem;
   color: #474343;
   margin: 0;
   margin-bottom: 0.3rem;
@@ -63,7 +64,7 @@
 }
 
 .hero-title {
-  font-size: 3.2rem;
+  font-size: 3.8rem;
   color: #474343;
   margin: 0;
   margin-bottom: 0.8rem;
@@ -73,7 +74,7 @@
 }
 
 .hero-subtitle {
-  font-size: 1.6rem;
+  font-size: 1.9rem;
   color: #474343;
   margin: 0;
   margin-bottom: 2.5rem;
@@ -179,14 +180,15 @@
 }
 
 .image-placeholder {
-  width: 420px;
-  height: 420px;
-  background: #fff;
-  border-radius: 50%;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-  border: 8px solid #f5f5f5;
+    width: 570px;
+    height: 570px;
+    background: #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border: 8px solid #f5f5f5;
+    margin-left: auto;
 }
 
 .image-placeholder::before {
