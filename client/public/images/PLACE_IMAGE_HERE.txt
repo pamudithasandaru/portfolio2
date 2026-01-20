@@ -1,0 +1,9 @@
+IMPORTANT: Place your profile image here
+
+Filename: profile.jpg
+Recommended size: 1000x1000 pixels (square)
+Format: JPG or PNG
+
+This image will be displayed in the circular frame on the hero section.
+
+The image path in the code is: /images/profile.jpg

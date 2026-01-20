@@ -1,0 +1,180 @@
+/* Navbar Styles */
+.navbar {
+    background-color: transparent;
+    backdrop-filter: none;
+    box-shadow: 0 14px 39.9px rgba(0, 0, 0, 0.25);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1.5rem 0;
+    height: 65px;
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar-logo {
+    position: absolute;
+    left: 0;
+    padding-left: 50px;
+}
+
+.navbar-logo a {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #474343;
+    text-decoration: none;
+    letter-spacing: 0;
+    transition: color 0.3s ease;
+}
+
+.navbar-logo a:hover {
+  color: #666;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 3rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-links {
+  color: #474343;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-links:hover {
+  color: #666;
+}
+
+.nav-links::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #474343;
+  transition: width 0.3s ease;
+}
+
+.nav-links:hover::after {
+  width: 100%;
+}
+
+.contact-email {
+    background-color: transparent;
+    padding: 0.65rem 1.8rem;
+    border-radius: 30px;
+    border: 2px solid #d0d0d0;
+    position: absolute;
+    right: 50px;
+}
+
+.email-link {
+  color: #474343;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.email-link:hover {
+  color: #666;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 6px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #222;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.hamburger span.active:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger span.active:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger span.active:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 70px;
+    left: -100%;
+    flex-direction: column;
+    background-color: #fff;
+    width: 100%;
+    text-align: center;
+    transition: left 0.3s;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .contact-email {
+    display: none;
+  }
+
+  .navbar-container {
+    padding: 0 1.5rem;
+  }
+
+  .navbar-logo a {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 1rem;
+  }
+
+  .navbar-logo a {
+    font-size: 1rem;
+  }
+}
