@@ -1,10 +1,13 @@
 /* Navbar Styles */
 .navbar {
-    background-color: transparent;
-    backdrop-filter: none;
+  background-color: rgba(250, 250, 250, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 14px 39.9px rgba(0, 0, 0, 0.25);
-    position: sticky;
+  position: fixed;
     top: 0;
+  left: 0;
+  width: 100%;
     z-index: 100;
     padding: 1.5rem 0;
     height: 65px;
@@ -110,6 +113,9 @@
   flex-direction: column;
   cursor: pointer;
   gap: 6px;
+  border: none;
+  background: transparent;
+  padding: 0;
 }
 
 .hamburger span {

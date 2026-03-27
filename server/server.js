@@ -1,6 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const path = require('node:path');
 require('dotenv').config();
+const volunteeringExperienceRoutes = require('./routes/volunteeringExperienceRoutes');
+const languageToolSectionRoutes = require('./routes/languageToolSectionRoutes');
+const projectCategoryRoutes = require('./routes/projectCategoryRoutes');
 
 const app = express();
 
@@ -9,10 +14,29 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from client public folder
+app.use(express.static(path.join(__dirname, '../client/public')));
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+    process.exit(1);
+  }
+};
+
+connectDB();
+
 // Basic route
 app.get('/api', (req, res) => {
   res.json({ message: 'Portfolio API is running' });
 });
+
+app.use('/api/volunteering-experiences', volunteeringExperienceRoutes);
+app.use('/api/language-tool-sections', languageToolSectionRoutes);
+app.use('/api/project-categories', projectCategoryRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -17,7 +17,9 @@ return (
                 <div className="hero-text">
                     <h1 className="hero-greeting">Hi!</h1>
                     <h2 className="hero-title">I'M SANDARU GUNASENA</h2>
-                    <p className="hero-subtitle">AI/ML Enthusiast & Developer</p>
+                    <p className="hero-subtitle">
+                        <span className="hero-subtitle-text">AI/ML Enthusiast & Developer</span>
+                    </p>
 
                     <div className="hero-actions">
                         <button 

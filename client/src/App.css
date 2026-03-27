@@ -4,12 +4,17 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #fafafa;
   color: #474343;
+  padding-top: 65px;
 }
 
 .App {
@@ -17,4 +22,207 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background-color: #fafafa;
+}
+
+.home-page {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-background-orbs {
+  position: fixed;
+  inset: 65px 0 0 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+  mix-blend-mode: multiply;
+}
+
+.home-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(36px);
+  opacity: 0.2;
+  will-change: transform;
+}
+
+.home-page .hero-container,
+.home-page .about-container,
+.home-page .footer-container {
+  position: relative;
+  z-index: 6;
+}
+
+.home-orb-1 {
+  width: 260px;
+  height: 260px;
+  top: 8%;
+  left: -4%;
+  background: rgba(71, 67, 67, 0.35);
+  animation: homeOrbDrift1 34s ease-in-out infinite alternate;
+}
+
+.home-orb-2 {
+  width: 210px;
+  height: 210px;
+  top: 20%;
+  right: 8%;
+  background: rgba(99, 96, 96, 0.32);
+  animation: homeOrbDrift2 40s ease-in-out infinite alternate;
+}
+
+.home-orb-3 {
+  width: 280px;
+  height: 280px;
+  top: 44%;
+  right: -6%;
+  background: rgba(71, 67, 67, 0.3);
+  animation: homeOrbDrift3 46s ease-in-out infinite alternate;
+}
+
+.home-orb-4 {
+  width: 220px;
+  height: 220px;
+  top: 60%;
+  left: 10%;
+  background: rgba(99, 96, 96, 0.27);
+  animation: homeOrbDrift4 38s ease-in-out infinite alternate;
+}
+
+.home-orb-5 {
+  width: 320px;
+  height: 320px;
+  bottom: -10%;
+  left: 46%;
+  background: rgba(71, 67, 67, 0.24);
+  animation: homeOrbDrift5 44s ease-in-out infinite alternate;
+}
+
+@keyframes homeOrbDrift1 {
+  0% {
+    transform: translate3d(0vw, 0vh, 0) scale(1);
+  }
+  25% {
+    transform: translate3d(24vw, 10vh, 0) scale(1.07);
+  }
+  50% {
+    transform: translate3d(12vw, 28vh, 0) scale(0.98);
+  }
+  75% {
+    transform: translate3d(32vw, 18vh, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(8vw, 36vh, 0) scale(1.01);
+  }
+}
+
+@keyframes homeOrbDrift2 {
+  0% {
+    transform: translate3d(0vw, 0vh, 0) scale(1);
+  }
+  25% {
+    transform: translate3d(-22vw, 14vh, 0) scale(1.08);
+  }
+  50% {
+    transform: translate3d(-8vw, 30vh, 0) scale(0.97);
+  }
+  75% {
+    transform: translate3d(-28vw, 40vh, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-14vw, 10vh, 0) scale(1.02);
+  }
+}
+
+@keyframes homeOrbDrift3 {
+  0% {
+    transform: translate3d(0vw, 0vh, 0) scale(1);
+  }
+  25% {
+    transform: translate3d(-30vw, -8vh, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(-18vw, 18vh, 0) scale(0.98);
+  }
+  75% {
+    transform: translate3d(-36vw, 34vh, 0) scale(1.09);
+  }
+  100% {
+    transform: translate3d(-10vw, 22vh, 0) scale(1.01);
+  }
+}
+
+@keyframes homeOrbDrift4 {
+  0% {
+    transform: translate3d(0vw, 0vh, 0) scale(1);
+  }
+  25% {
+    transform: translate3d(16vw, -14vh, 0) scale(1.07);
+  }
+  50% {
+    transform: translate3d(34vw, -4vh, 0) scale(0.96);
+  }
+  75% {
+    transform: translate3d(18vw, 20vh, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(30vw, 8vh, 0) scale(1.01);
+  }
+}
+
+@keyframes homeOrbDrift5 {
+  0% {
+    transform: translate3d(0vw, 0vh, 0) scale(1);
+  }
+  25% {
+    transform: translate3d(-20vw, -16vh, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(16vw, -24vh, 0) scale(0.97);
+  }
+  75% {
+    transform: translate3d(24vw, -8vh, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-8vw, 12vh, 0) scale(1.01);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-orb {
+    filter: blur(28px);
+    opacity: 0.18;
+  }
+
+  .home-orb-1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .home-orb-2 {
+    width: 160px;
+    height: 160px;
+    right: 2%;
+  }
+
+  .home-orb-3 {
+    width: 210px;
+    height: 210px;
+  }
+
+  .home-orb-4 {
+    width: 170px;
+    height: 170px;
+    left: 2%;
+  }
+
+  .home-orb-5 {
+    width: 230px;
+    height: 230px;
+    left: 38%;
+  }
+}
+
+section[id] {
+  scroll-margin-top: 85px;
 }
