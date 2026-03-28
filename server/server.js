@@ -6,6 +6,7 @@ require('dotenv').config();
 const volunteeringExperienceRoutes = require('./routes/volunteeringExperienceRoutes');
 const languageToolSectionRoutes = require('./routes/languageToolSectionRoutes');
 const projectCategoryRoutes = require('./routes/projectCategoryRoutes');
+const certificationCategoryRoutes = require('./routes/certificationCategoryRoutes');
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.get('/api', (req, res) => {
 app.use('/api/volunteering-experiences', volunteeringExperienceRoutes);
 app.use('/api/language-tool-sections', languageToolSectionRoutes);
 app.use('/api/project-categories', projectCategoryRoutes);
+app.use('/api/certification-categories', certificationCategoryRoutes);
 
 const PORT = process.env.PORT || 5000;
 

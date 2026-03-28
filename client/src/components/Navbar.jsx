@@ -20,6 +20,12 @@ const Navbar = () => {
       return;
     }
 
+    if (targetId === 'certifications') {
+      navigate('/certifications');
+      setIsOpen(false);
+      return;
+    }
+
     if (location.pathname !== '/') {
       navigate(`/#${targetId}`);
       setIsOpen(false);
@@ -62,7 +68,7 @@ const Navbar = () => {
             <a href="/projects" className="nav-links" onClick={(e) => handleNavClick(e, 'projects')}>Projects</a>
           </li>
           <li className="nav-item">
-            <a href="/#skills" className="nav-links" onClick={(e) => handleNavClick(e, 'skills')}>Certifications & Skills</a>
+            <a href="/certifications" className="nav-links" onClick={(e) => handleNavClick(e, 'certifications')}>Certifications & Skills</a>
           </li>
         </ul>
 

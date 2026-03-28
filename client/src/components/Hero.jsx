@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Hero.css';
 import { FaFacebook, FaLinkedin, FaGithub } from 'react-icons/fa';
-import profileImage from '../assets/images/profile.jpg';
+import profileImage from '../assets/images/ee.png';
 
 const Hero = () => {
   const [isHired, setIsHired] = useState(false);

@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
+import Certifications from './components/Certifications';
 import Footer from './components/Footer';
 
 const HomePage = () => {
@@ -55,6 +56,19 @@ const ProjectsPage = () => {
   );
 };
 
+const CertificationsPage = () => {
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
+
+  return (
+    <>
+      <Certifications />
+      <Footer />
+    </>
+  );
+};
+
 function AppContent() {
   return (
     <div className="App">
@@ -62,6 +76,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/certifications" element={<CertificationsPage />} />
       </Routes>
     </div>
   );

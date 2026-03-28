@@ -195,8 +195,8 @@
 }
 
 .category-nav-btn.active .category-nav-count {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
+  color: #2f2c2c;
 }
 
 /* Arrow */
@@ -282,9 +282,9 @@
 }
 
 .project-nav-btn:hover {
-  color: #474343;
-  background: rgba(71, 67, 67, 0.04);
-  border-color: rgba(71, 67, 67, 0.1);
+  color: #2f2c2c;
+  background: #e3e3e3;
+  border-color: #bfbfbf;
   transform: translateX(3px);
 }
 

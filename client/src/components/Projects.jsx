@@ -142,7 +142,11 @@ const Projects = () => {
       );
     }
 
-    return <video className="project-video-frame" src={activeVideoProject.demoVideoUrl} controls autoPlay />;
+    return (
+      <video className="project-video-frame" src={activeVideoProject.demoVideoUrl} controls autoPlay>
+        <track kind="captions" srcLang="en" label="English" src="data:text/vtt;charset=utf-8,WEBVTT" />
+      </video>
+    );
   };
 
   return (
@@ -285,8 +289,8 @@ const Projects = () => {
       </div>
 
       {activeVideoProject && (
-        <div className="project-video-modal-overlay" onClick={handleVideoClose}>
-          <div className="project-video-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="project-video-modal-overlay">
+          <dialog className="project-video-modal" open>
             <div className="project-video-modal-head">
               <h4>{activeVideoProject.title} Demo</h4>
               <button type="button" onClick={handleVideoClose} aria-label="Close video popup">
@@ -294,7 +298,7 @@ const Projects = () => {
               </button>
             </div>
             <div className="project-video-modal-body">{renderVideoPlayer()}</div>
-          </div>
+          </dialog>
         </div>
       )}
     </section>
