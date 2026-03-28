@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FaSearch, FaArrowLeft, FaGithub, FaExternalLinkAlt, FaPlay } from 'react-icons/fa';
 import useScrollAnimation from '../hooks/useScrollAnimation';
+import ProjectNavigationSidebar from './ProjectNavigationSidebar';
 import '../styles/Projects.css';
 
 const getEmbeddableUrl = (url = '') => {
@@ -114,6 +115,14 @@ const Projects = () => {
     setActiveVideoProject(null);
   };
 
+  const handleSidebarSelectCategory = (category) => {
+    handleCategoryOpen(category.slug);
+  };
+
+  const handleSidebarSelectProject = (category, project) => {
+    handleCategoryOpen(category.slug);
+  };
+
   const renderVideoPlayer = () => {
     if (!activeVideoProject?.demoVideoUrl) {
       return null;
@@ -138,7 +147,17 @@ const Projects = () => {
 
   return (
     <section id="projects" className="projects" ref={sectionRef}>
-      <div className="projects-container">
+      <div className="projects-wrapper">
+        {!loading && !error && (
+          <ProjectNavigationSidebar
+            categories={categories}
+            activeCategory={activeCategory}
+            onSelectCategory={handleSidebarSelectCategory}
+            onSelectProject={handleSidebarSelectProject}
+          />
+        )}
+
+        <div className="projects-container">
         <header className="projects-header">
           <h2 className="projects-title">Project Lab</h2>
           <div className="title-underline" />
@@ -262,6 +281,7 @@ const Projects = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
 
       {activeVideoProject && (

@@ -1,0 +1,404 @@
+/* Project Navigation Sidebar */
+.project-navigation-sidebar {
+  width: 280px;
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  border-right: 1px solid #e8e8e8;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
+  animation: slideInLeft 0.7s ease-out 0.1s both;
+}
+
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #ffffff 0%, #fcfcfc 100%);
+}
+
+.sidebar-title {
+  margin: 0 0 0.8rem 0;
+  font-size: 1.1rem;
+  color: #474343;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  animation: revealUp 0.6s ease-out 0.2s both;
+}
+
+.sidebar-accent-line {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #474343 0%, #636060 100%);
+  border-radius: 2px;
+  animation: slideInLeft 0.5s ease-out 0.3s both;
+}
+
+/* Network Container */
+.project-network-container {
+  flex: 1;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+}
+
+.project-network-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-network-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-network-container::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 3px;
+}
+
+.project-network-container::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+.network-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+/* Projects List */
+.projects-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.project-category-nav-item {
+  margin-bottom: 0.8rem;
+  animation: revealUp 0.6s ease-out both;
+}
+
+.project-category-nav-item:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.project-category-nav-item:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.project-category-nav-item:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.project-category-nav-item:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.project-category-nav-item:nth-child(5) {
+  animation-delay: 0.7s;
+}
+
+/* Category Navigation Button */
+.category-nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 0.9rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fbfbfb 100%);
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem;
+  color: #474343;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-nav-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.3) 50%, transparent 80%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.category-nav-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.category-nav-btn:hover {
+  border-color: #d0d0d0;
+  background: linear-gradient(135deg, #ffffff 0%, #fcfcfc 100%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateX(4px);
+}
+
+.category-nav-btn.active {
+  background: linear-gradient(135deg, #474343 0%, #636060 100%);
+  color: #ffffff;
+  border-color: #474343;
+  box-shadow: 0 8px 20px rgba(71, 67, 67, 0.25);
+}
+
+.category-nav-btn.active .category-nav-dot {
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* Category Dot */
+.category-nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #474343;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(71, 67, 67, 0.2);
+}
+
+.category-nav-btn:hover .category-nav-dot {
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(71, 67, 67, 0.4);
+}
+
+/* Category Text */
+.category-nav-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.category-nav-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.category-nav-count {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  background: rgba(71, 67, 67, 0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.category-nav-btn.active .category-nav-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Arrow */
+.category-nav-arrow {
+  font-size: 1.3rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.6;
+}
+
+.category-nav-arrow.expanded {
+  transform: rotate(90deg);
+}
+
+.category-nav-btn.active .category-nav-arrow {
+  opacity: 1;
+  color: #ffffff;
+}
+
+/* Projects Sub List */
+.projects-sub-list {
+  list-style: none;
+  padding: 0.6rem 0 0 1.2rem;
+  margin: 0.6rem 0 0 0;
+  border-left: 2px solid #e0e0e0;
+  animation: revealUp 0.4s ease-out both;
+}
+
+.project-nav-item {
+  margin-bottom: 0.5rem;
+  animation: slideInLeft 0.4s ease-out both;
+}
+
+.projects-sub-list .project-nav-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.projects-sub-list .project-nav-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.projects-sub-list .project-nav-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.projects-sub-list .project-nav-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.projects-sub-list .project-nav-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* Project Navigation Button */
+.project-nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.8rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 600;
+  position: relative;
+}
+
+.project-nav-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(71, 67, 67, 0.05) 50%, transparent 80%);
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-nav-btn:hover::before {
+  opacity: 1;
+}
+
+.project-nav-btn:hover {
+  color: #474343;
+  background: rgba(71, 67, 67, 0.04);
+  border-color: rgba(71, 67, 67, 0.1);
+  transform: translateX(3px);
+}
+
+.project-nav-btn:active {
+  transform: translateX(2px);
+}
+
+/* Project Node */
+.project-nav-node {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a0a0a0;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 4px rgba(71, 67, 67, 0.1);
+}
+
+.project-nav-btn:hover .project-nav-node {
+  width: 8px;
+  height: 8px;
+  background: #474343;
+  box-shadow: 0 0 8px rgba(71, 67, 67, 0.3);
+}
+
+/* Project Name */
+.project-nav-name {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.25s ease;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #fcfcfc 0%, #fafafa 100%);
+  animation: revealUp 0.6s ease-out 0.8s both;
+}
+
+/* Network Legend */
+.network-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.legend-dot.category-dot {
+  background: #474343;
+  box-shadow: 0 0 6px rgba(71, 67, 67, 0.3);
+}
+
+.legend-dot.project-dot {
+  background: #a0a0a0;
+  box-shadow: 0 0 4px rgba(71, 67, 67, 0.2);
+}
+
+.legend-item:hover .legend-dot {
+  transform: scale(1.4);
+}
+
+/* Animations */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .project-navigation-sidebar {
+    width: 260px;
+  }
+}
+
+@media (max-width: 980px) {
+  .project-navigation-sidebar {
+    display: none;
+  }
+}

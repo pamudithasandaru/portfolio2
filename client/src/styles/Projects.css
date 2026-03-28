@@ -3,17 +3,31 @@
   min-height: 600px;
   background: #fafafa;
   padding: 4.2rem 0 2.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.projects-wrapper {
+  display: flex;
+  flex: 1;
+  height: 100%;
 }
 
 .projects-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  flex: 1;
+  width: 100%;
 }
 
 .projects-header {
   text-align: center;
   margin-bottom: 1.6rem;
+  animation: revealUp 0.75s ease-out;
 }
 
 .projects-title {
@@ -21,6 +35,7 @@
   font-size: 2.6rem;
   color: #474343;
   letter-spacing: -0.4px;
+  animation: revealUp 0.75s ease-out 0.1s both;
 }
 
 .projects-feedback {
@@ -36,6 +51,7 @@
 .projects-search-wrap {
   max-width: 640px;
   margin: 0 auto 1.3rem;
+  animation: revealUp 0.75s ease-out 0.2s both;
 }
 
 .projects-search-label {
@@ -47,6 +63,7 @@
   margin-bottom: 0.45rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .projects-search-box {
@@ -58,6 +75,7 @@
   border-radius: 999px;
   padding: 0.78rem 1rem;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+  animation: revealUp 0.75s ease-out 0.3s both;
 }
 
 .projects-search-box svg {
@@ -86,6 +104,19 @@
   background: linear-gradient(165deg, #ffffff 0%, #fbfbfb 100%);
   text-align: left;
   padding: 1rem;
+  animation: scalePopIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+}
+
+.project-category-tile:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.project-category-tile:nth-child(2) {
+  animation-delay: 0.42s;
+}
+
+.project-category-tile:nth-child(3) {
+  animation-delay: 0.54s;
   cursor: pointer;
   transition: transform 0.24s ease, box-shadow 0.24s ease;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
@@ -123,6 +154,7 @@
 
 .project-category-detail {
   margin-top: 0.6rem;
+  animation: revealUp 0.6s ease-out both;
 }
 
 .project-category-detail-head {
@@ -131,6 +163,7 @@
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
+  animation: slideInLeft 0.6s ease-out both;
 }
 
 .project-category-detail-head h3 {
@@ -138,6 +171,7 @@
   color: #2f2c2c;
   font-size: 1.35rem;
   letter-spacing: 0.01em;
+  animation: revealUp 0.6s ease-out 0.1s both;
 }
 
 .project-back-btn {
@@ -152,6 +186,23 @@
   font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
+  animation: slideInRight 0.6s ease-out 0.15s both;
+}
+
+.project-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.project-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.project-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.project-card:nth-child(4) {
+  animation-delay: 0.4s;
 }
 
 .project-list-vertical {
@@ -168,6 +219,7 @@
   grid-template-columns: 1.25fr 0.85fr;
   min-height: 230px;
   overflow: hidden;
+  animation: slideInLeft 0.65s ease-out both;
 }
 
 .project-card-main {
@@ -231,6 +283,7 @@
   isolation: isolate;
   background: #f7f7f7;
   display: flex;
+  animation: scalePopIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
   align-items: center;
   justify-content: center;
   padding: 0.95rem;
@@ -306,6 +359,7 @@
   justify-content: center;
   z-index: 1200;
   padding: 1rem;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .project-video-modal {
@@ -314,6 +368,7 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  animation: modalPopIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
 }
 
 .project-video-modal-head {
@@ -347,6 +402,75 @@
   width: 100%;
   height: 100%;
   border: none;
+}
+
+/* Animations */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scalePopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 @media (max-width: 980px) {
