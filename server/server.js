@@ -7,6 +7,7 @@ const volunteeringExperienceRoutes = require('./routes/volunteeringExperienceRou
 const languageToolSectionRoutes = require('./routes/languageToolSectionRoutes');
 const projectCategoryRoutes = require('./routes/projectCategoryRoutes');
 const certificationCategoryRoutes = require('./routes/certificationCategoryRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 const app = express();
 
@@ -24,7 +25,7 @@ const connectDB = async () => {
     console.log('MongoDB connected');
   } catch (error) {
     console.error('MongoDB connection error:', error.message);
-    process.exit(1);
+    console.warn('Server will continue without database connectivity.');
   }
 };
 
@@ -39,6 +40,7 @@ app.use('/api/volunteering-experiences', volunteeringExperienceRoutes);
 app.use('/api/language-tool-sections', languageToolSectionRoutes);
 app.use('/api/project-categories', projectCategoryRoutes);
 app.use('/api/certification-categories', certificationCategoryRoutes);
+app.use('/api/contact', contactRoutes);
 
 const PORT = process.env.PORT || 5000;
 

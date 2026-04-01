@@ -73,7 +73,7 @@ const Navbar = () => {
         </ul>
 
         <div className="contact-email">
-          <a href="mailto:pamudithasandaru2002@gmail.com" className="email-link">
+          <a href="/#contact" className="email-link" onClick={(e) => handleNavClick(e, 'contact')}>
             pamudithasandaru2002@gmail.com
           </a>
         </div>

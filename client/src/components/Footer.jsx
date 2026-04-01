@@ -47,12 +47,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#projects" onClick={(e) => handleScrollToSection(e, 'projects')}>
+                <a href="/projects" onClick={(e) => handleScrollToSection(e, 'projects')}>
                   Projects
                 </a>
               </li>
               <li>
-                <a href="#skills" onClick={(e) => handleScrollToSection(e, 'skills')}>
+                <a href="/certifications" onClick={(e) => handleScrollToSection(e, 'skills')}>
                   Certifications & Skills
                 </a>
               </li>
@@ -69,18 +69,18 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="tel:+94700000000" className="footer-contact-link">
+                <a href="tel:+94710395435" className="footer-contact-link">
                   <FaPhone aria-hidden="true" />
-                  <span>+94 70 000 0000</span>
+                  <span>+94 71 0395 435</span>
                 </a>
               </li>
             </ul>
 
             <div className="footer-socials" aria-label="Social links">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <a href="www.linkedin.com/in/pamuditha-sandaru-4561ab280" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <FaLinkedin />
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <a href="https://github.com/pamudithasandaru" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <FaGithub />
               </a>
             </div>

@@ -4,6 +4,7 @@ import useScrollAnimation from '../hooks/useScrollAnimation';
 import AlbumModal from './AlbumModal';
 
 const About = () => {
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
   const [volunteeringExperiences, setVolunteeringExperiences] = useState([]);
   const [volunteeringLoading, setVolunteeringLoading] = useState(true);
   const [volunteeringError, setVolunteeringError] = useState('');
@@ -12,6 +13,15 @@ const About = () => {
   const [languageToolError, setLanguageToolError] = useState('');
   const [albumModalOpen, setAlbumModalOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState(null);
+  const [contactForm, setContactForm] = useState({
+    fromEmail: '',
+    message: '',
+  });
+  const [contactStatus, setContactStatus] = useState({
+    submitting: false,
+    error: '',
+    success: '',
+  });
 
   const headerRef = useScrollAnimation();
   const contentRef = useScrollAnimation();
@@ -20,6 +30,7 @@ const About = () => {
   const ctaRef = useScrollAnimation();
   const languageToolsRef = useScrollAnimation();
   const volunteeringRef = useScrollAnimation();
+  const contactRef = useScrollAnimation();
   const educationItemOneRef = useScrollAnimation();
   const educationItemTwoRef = useScrollAnimation();
   const educationItemThreeRef = useScrollAnimation();
@@ -27,7 +38,6 @@ const About = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
 
     const fetchVolunteeringExperiences = async () => {
       try {
@@ -83,7 +93,7 @@ const About = () => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [apiBaseUrl]);
 
   const handleSkillsClick = (e) => {
     e.preventDefault();
@@ -101,6 +111,79 @@ const About = () => {
   const handleCloseAlbumModal = () => {
     setAlbumModalOpen(false);
     setSelectedExperience(null);
+  };
+
+  const handleContactChange = (event) => {
+    const { name, value } = event.target;
+    setContactForm((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+    setContactStatus((previous) => ({
+      ...previous,
+      error: '',
+      success: '',
+    }));
+  };
+
+  const handleContactSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!contactForm.fromEmail.trim() || !contactForm.message.trim()) {
+      setContactStatus({
+        submitting: false,
+        error: 'Please provide your email and message before sending.',
+        success: '',
+      });
+      return;
+    }
+
+    try {
+      setContactStatus({
+        submitting: true,
+        error: '',
+        success: '',
+      });
+
+      const response = await fetch(`${apiBaseUrl}/api/contact/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fromEmail: contactForm.fromEmail.trim(),
+          message: contactForm.message.trim(),
+        }),
+      });
+
+      const responseText = await response.text();
+      const contentType = response.headers.get('content-type') || '';
+      const payload = contentType.includes('application/json') && responseText
+        ? JSON.parse(responseText)
+        : {};
+
+      if (!response.ok) {
+        setContactStatus({
+          submitting: false,
+          error: payload.message || `Unable to send your message (status ${response.status}).`,
+          success: '',
+        });
+        return;
+      }
+
+      setContactStatus({
+        submitting: false,
+        error: '',
+        success: payload.message || 'Message sent successfully.',
+      });
+      setContactForm({ fromEmail: '', message: '' });
+    } catch (error) {
+      setContactStatus({
+        submitting: false,
+        error: error.message || 'Failed to send message. Please try again.',
+        success: '',
+      });
+    }
   };
 
   return (
@@ -334,6 +417,61 @@ const About = () => {
                   ))}
                 </ul>
               )}
+            </div>
+
+            <div className="contact-section scroll-slide-up" ref={contactRef}>
+              <h3 className="timeline-title">Discuss New Projects</h3>
+              <p className="contact-section-intro">
+                Have an idea, feedback, or collaboration opportunity? Send me a quick message and I will reply by email.
+              </p>
+
+              <form className="contact-form-card" onSubmit={handleContactSubmit}>
+                <label className="contact-label" htmlFor="fromEmail">
+                  From
+                </label>
+                <input
+                  id="fromEmail"
+                  name="fromEmail"
+                  type="email"
+                  autoComplete="email"
+                  className="contact-input"
+                  placeholder="yourname@email.com"
+                  value={contactForm.fromEmail}
+                  onChange={handleContactChange}
+                  required
+                />
+
+                <label className="contact-label" htmlFor="message">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  className="contact-textarea"
+                  placeholder="Write your comment or project idea here..."
+                  value={contactForm.message}
+                  onChange={handleContactChange}
+                  required
+                />
+
+                {contactStatus.error && (
+                  <p className="contact-feedback contact-feedback-error">{contactStatus.error}</p>
+                )}
+
+                {contactStatus.success && (
+                  <p className="contact-feedback contact-feedback-success">{contactStatus.success}</p>
+                )}
+
+                <div className="contact-send-wrap">
+                  <button
+                    type="submit"
+                    className="contact-send-btn"
+                    disabled={contactStatus.submitting}
+                  >
+                    {contactStatus.submitting ? 'Sending...' : 'Send'}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

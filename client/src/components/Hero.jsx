@@ -34,13 +34,13 @@ return (
                     </div>
 
                     <div className="social-icons">
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-link">
+                        <a href="https://www.facebook.com/pamuditha.sandaru" target="_blank" rel="noopener noreferrer" className="social-link">
                             <FaFacebook />
                         </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-link">
+                        <a href="www.linkedin.com/in/pamuditha-sandaru-4561ab280" target="_blank" rel="noopener noreferrer" className="social-link">
                             <FaLinkedin />
                         </a>
-                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-link">
+                        <a href="https://github.com/pamudithasandaru" target="_blank" rel="noopener noreferrer" className="social-link">
                             <FaGithub />
                         </a>
                     </div>
