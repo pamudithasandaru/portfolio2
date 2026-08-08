@@ -112,13 +112,11 @@
 }
 
 .hero-company-logo {
-  width: 42px;
-  height: 42px;
+  width: 175px;
+  height: 49px;
   object-fit: contain;
   border-radius: 8px;
-  background: #fff;
   padding: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .hero-role-text {
