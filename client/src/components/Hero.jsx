@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Hero.css';
 import { FaFacebook, FaLinkedin, FaGithub } from 'react-icons/fa';
 import profileImage from '../assets/images/ee.png';
+import creativeLogo from '../assets/images/creative_logo.png';
 
 const Hero = () => {
   const [isHired, setIsHired] = useState(false);
@@ -20,6 +21,11 @@ return (
                     <p className="hero-subtitle">
                         <span className="hero-subtitle-text">AI/ML Enthusiast & Developer</span>
                     </p>
+
+                    <div className="hero-current-role">
+                        <img src={creativeLogo} alt="Creative Software" className="hero-company-logo" />
+                        <span className="hero-role-text">Software Engineering Intern at Creative Software</span>
+                    </div>
 
                     <div className="hero-actions">
                         <button 
