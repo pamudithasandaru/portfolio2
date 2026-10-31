@@ -19,21 +19,45 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from client public folder
 app.use(express.static(path.join(__dirname, '../client/public')));
 
+// Cache the connection on `global` so warm serverless invocations reuse it
+const cached = global.mongooseCache || (global.mongooseCache = { conn: null, promise: null });
+
 const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    console.warn('Server will continue without database connectivity.');
+  if (cached.conn) {
+    return cached.conn;
   }
+
+  cached.promise ||= mongoose
+    .connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 8000 })
+    .then((m) => {
+      console.log('MongoDB connected');
+      return m;
+    })
+    .catch((error) => {
+      cached.promise = null;
+      throw error;
+    });
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
 
-connectDB();
+// Kick off the connection at boot so it overlaps with request parsing
+connectDB().catch((error) => {
+  console.error('MongoDB connection error:', error.message);
+});
 
 // Basic route
 app.get('/api', (req, res) => {
   res.json({ message: 'Portfolio API is running' });
+});
+
+// Let Vercel's CDN cache public GET responses; serve stale while revalidating
+app.use('/api', (req, res, next) => {
+  if (req.method === 'GET') {
+    res.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
+  }
+  next();
 });
 
 app.use('/api/volunteering-experiences', volunteeringExperienceRoutes);
@@ -44,6 +68,10 @@ app.use('/api/contact', contactRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
