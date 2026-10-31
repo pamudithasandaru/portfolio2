@@ -1,6 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const validator = require('validator');
+const ContactMessage = require('../models/ContactMessage');
 
 const router = express.Router();
 
@@ -34,6 +35,11 @@ router.post('/send', async (req, res) => {
         message: 'Message is too long. Please keep it under 5000 characters.',
       });
     }
+
+    // Keep a copy for the admin inbox, even if the email below fails
+    await ContactMessage.create({ fromEmail: String(fromEmail).trim(), message: safeMessage }).catch((error) => {
+      console.error('Contact message not stored:', error.message);
+    });
 
     const gmailUser = process.env.GMAIL_USER;
     const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;

@@ -1,9 +1,14 @@
 import React from 'react';
-import { FaEnvelope, FaPhone, FaLinkedin, FaGithub, FaArrowUp } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaEnvelope, FaPhone, FaArrowUp } from 'react-icons/fa';
 import '../styles/Footer.css';
+import SocialIcon, { socialLabel } from './SocialIcon';
+import { useSiteContent } from '../api/queries';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { footer, socials } = useSiteContent();
+  const phoneLink = footer.phone.replace(/[^\d+]/g, '');
 
   const handleScrollToSection = (e, targetId) => {
     e.preventDefault();
@@ -25,12 +30,9 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-main-grid">
           <section className="footer-card footer-brand-card" aria-label="Brand information">
-            <h3 className="footer-brand">Sandaru Gunasena</h3>
-            <p className="footer-brand-subtitle">AI/ML Enthusiast & Developer</p>
-            <p className="footer-description">
-              Building practical and human-centered digital experiences with a focus on machine
-              learning, software engineering, and continuous growth.
-            </p>
+            <h3 className="footer-brand">{footer.brand}</h3>
+            <p className="footer-brand-subtitle">{footer.subtitle}</p>
+            <p className="footer-description">{footer.description}</p>
           </section>
 
           <nav className="footer-card footer-links-card" aria-label="Quick navigation">
@@ -52,6 +54,9 @@ const Footer = () => {
                 </a>
               </li>
               <li>
+                <Link to="/blogs">Blogs</Link>
+              </li>
+              <li>
                 <a href="/certifications" onClick={(e) => handleScrollToSection(e, 'skills')}>
                   Certifications & Skills
                 </a>
@@ -62,33 +67,38 @@ const Footer = () => {
           <section className="footer-card footer-contact-card" aria-label="Contact information">
             <h4 className="footer-heading">Contact</h4>
             <ul className="footer-contact-list">
-              <li>
-                <a href="mailto:pamudithasandaru2002@gmail.com" className="footer-contact-link">
-                  <FaEnvelope aria-hidden="true" />
-                  <span>pamudithasandaru2002@gmail.com</span>
-                </a>
-              </li>
-              <li>
-                <a href="tel:+94710395435" className="footer-contact-link">
-                  <FaPhone aria-hidden="true" />
-                  <span>+94 71 0395 435</span>
-                </a>
-              </li>
+              {footer.email && (
+                <li>
+                  <a href={`mailto:${footer.email}`} className="footer-contact-link">
+                    <FaEnvelope aria-hidden="true" />
+                    <span>{footer.email}</span>
+                  </a>
+                </li>
+              )}
+              {footer.phone && (
+                <li>
+                  <a href={`tel:${phoneLink}`} className="footer-contact-link">
+                    <FaPhone aria-hidden="true" />
+                    <span>{footer.phone}</span>
+                  </a>
+                </li>
+              )}
             </ul>
 
             <div className="footer-socials" aria-label="Social links">
-              <a href="https://www.linkedin.com/in/pamuditha-sandaru-4561ab280" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <FaLinkedin />
-              </a>
-              <a href="https://github.com/pamudithasandaru" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <FaGithub />
-              </a>
+              {socials
+                .filter((social) => social.inFooter && social.url)
+                .map((social) => (
+                  <a key={social.platform + social.url} href={social.url} target="_blank" rel="noopener noreferrer" aria-label={socialLabel(social.platform)}>
+                    <SocialIcon platform={social.platform} />
+                  </a>
+                ))}
             </div>
           </section>
         </div>
 
         <div className="footer-bottom-bar">
-          <p className="footer-copyright">Copyright {currentYear} Sandaru Gunasena. All rights reserved.</p>
+          <p className="footer-copyright">Copyright {currentYear} {footer.copyrightName}. All rights reserved.</p>
           <button type="button" className="footer-top-btn" onClick={handleBackToTop}>
             <FaArrowUp aria-hidden="true" />
             <span>Top</span>

@@ -1,31 +1,34 @@
 import React, { useState } from 'react';
 import '../styles/Hero.css';
-import { FaFacebook, FaLinkedin, FaGithub } from 'react-icons/fa';
 import profileImage from '../assets/images/ee.webp';
 import creativeLogo from '../assets/images/creative_logo.png';
-import backgroundImage from '../assets/images/background.webp';
+import HeroBackground from './HeroBackground';
+import SocialIcon, { socialLabel } from './SocialIcon';
+import { useSiteContent } from '../api/queries';
 
 const Hero = () => {
   const [isHired, setIsHired] = useState(false);
+  const { hero, socials } = useSiteContent();
 
   const handleHireClick = () => {
     setIsHired(!isHired);
   };
 
 return (
-    <section id="home" className="hero" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <section id="home" className="hero">
+        <HeroBackground />
         <div className="hero-container">
             <div className="hero-content">
                 <div className="hero-text">
-                    <h1 className="hero-greeting">Hi!</h1>
-                    <h2 className="hero-title">I'M SANDARU GUNASENA</h2>
+                    <h1 className="hero-greeting">{hero.greeting}</h1>
+                    <h2 className="hero-title">{hero.name}</h2>
                     <p className="hero-subtitle">
-                        <span className="hero-subtitle-text">AI/ML Enthusiast & Developer</span>
+                        <span className="hero-subtitle-text">{hero.subtitle}</span>
                     </p>
 
                     <div className="hero-current-role">
-                        <img src={creativeLogo} alt="Creative Software" className="hero-company-logo" width="175" height="49" decoding="async" />
-                        <span className="hero-role-text">Software Engineering Intern at Creative Software</span>
+                        <img src={hero.companyLogo || creativeLogo} alt={hero.roleText} className="hero-company-logo" width="175" height="49" decoding="async" />
+                        <span className="hero-role-text">{hero.roleText}</span>
                     </div>
 
                     <div className="hero-actions">
@@ -33,7 +36,7 @@ return (
                             className={`hire-btn ${isHired ? 'active' : ''}`}
                             onClick={handleHireClick}
                         >
-                            <span>Hire me</span>
+                            <span>{hero.hireLabel}</span>
                             <div className="toggle-switch">
                                 <div className="toggle-circle"></div>
                             </div>
@@ -41,21 +44,19 @@ return (
                     </div>
 
                     <div className="social-icons">
-                        <a href="https://www.facebook.com/pamuditha.sandaru" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Facebook">
-                            <FaFacebook aria-hidden="true" />
-                        </a>
-                        <a href="https://www.linkedin.com/in/pamuditha-sandaru-4561ab280" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="LinkedIn">
-                            <FaLinkedin aria-hidden="true" />
-                        </a>
-                        <a href="https://github.com/pamudithasandaru" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
-                            <FaGithub aria-hidden="true" />
-                        </a>
+                        {socials
+                            .filter((social) => social.inHero && social.url)
+                            .map((social) => (
+                                <a key={social.platform + social.url} href={social.url} target="_blank" rel="noopener noreferrer" className="social-link" aria-label={socialLabel(social.platform)}>
+                                    <SocialIcon platform={social.platform} />
+                                </a>
+                            ))}
                     </div>
                 </div>
 
                 <div className="hero-image">
                     <div className="image-placeholder">
-                        <img src={profileImage} alt="Sandaru Gunasena" width="900" height="1200" fetchPriority="high" decoding="async" />
+                        <img src={hero.profileImage || profileImage} alt={hero.profileAlt} width="900" height="1200" fetchPriority="high" decoding="async" />
                     </div>
                 </div>
             </div>

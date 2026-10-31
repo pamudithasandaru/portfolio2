@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import useTheme from '../hooks/useTheme';
+import { useSiteContent } from '../api/queries';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
@@ -9,6 +10,7 @@ const Navbar = () => {
   const location = useLocation();
   const routerNavigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { navbar } = useSiteContent();
   const navigate = (to) => routerNavigate(to, { viewTransition: true });
 
   const toggleMenu = () => {
@@ -20,6 +22,12 @@ const Navbar = () => {
 
     if (targetId === 'projects') {
       navigate('/projects');
+      setIsOpen(false);
+      return;
+    }
+
+    if (targetId === 'blogs') {
+      navigate('/blogs');
       setIsOpen(false);
       return;
     }
@@ -47,7 +55,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-logo">
-          <Link to="/">Pamuditha Sandaru</Link>
+          <Link to="/">{navbar.logoText}</Link>
         </div>
 
         <button
@@ -73,6 +81,9 @@ const Navbar = () => {
             <a href="/projects" className="nav-links" onClick={(e) => handleNavClick(e, 'projects')}>Projects</a>
           </li>
           <li className="nav-item">
+            <a href="/blogs" className="nav-links" onClick={(e) => handleNavClick(e, 'blogs')}>Blogs</a>
+          </li>
+          <li className="nav-item">
             <a href="/certifications" className="nav-links" onClick={(e) => handleNavClick(e, 'certifications')}>Certifications & Skills</a>
           </li>
         </ul>
@@ -89,7 +100,7 @@ const Navbar = () => {
           </button>
           <div className="contact-email">
             <a href="/#contact" className="email-link" onClick={(e) => handleNavClick(e, 'contact')}>
-              pamudithasandaru2002@gmail.com
+              {navbar.email}
             </a>
           </div>
         </div>

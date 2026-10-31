@@ -8,12 +8,22 @@ const languageToolSectionRoutes = require('./routes/languageToolSectionRoutes');
 const projectCategoryRoutes = require('./routes/projectCategoryRoutes');
 const certificationCategoryRoutes = require('./routes/certificationCategoryRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const blogFeedbackRoutes = require('./routes/blogFeedbackRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const mediaRoutes = require('./routes/mediaRoutes');
+const blogRoutes = require('./routes/blogRoutes');
+const siteContentRoutes = require('./routes/siteContentRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
+const { guardWrites } = require('./middleware/auth');
 
 const app = express();
 
+// Behind a hosting proxy, use the real client IP (needed for per-IP rate limits)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from client public folder
@@ -61,16 +71,29 @@ app.get('/health', (req, res) => {
 // Browser cache for GET responses (max-age); CDN cache if one is in front (s-maxage)
 app.use('/api', (req, res, next) => {
   if (req.method === 'GET') {
-    res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400');
+    // The admin panel always needs fresh data
+    res.set(
+      'Cache-Control',
+      req.get('Authorization')
+        ? 'no-store'
+        : 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400'
+    );
   }
   next();
 });
 
-app.use('/api/volunteering-experiences', volunteeringExperienceRoutes);
-app.use('/api/language-tool-sections', languageToolSectionRoutes);
-app.use('/api/project-categories', projectCategoryRoutes);
-app.use('/api/certification-categories', certificationCategoryRoutes);
+// Public reads stay open; any write (POST/PUT/PATCH/DELETE) needs an admin token
+app.use('/api/volunteering-experiences', guardWrites, volunteeringExperienceRoutes);
+app.use('/api/language-tool-sections', guardWrites, languageToolSectionRoutes);
+app.use('/api/project-categories', guardWrites, projectCategoryRoutes);
+app.use('/api/certification-categories', guardWrites, certificationCategoryRoutes);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/site-content', siteContentRoutes);
+app.use('/api/media', mediaRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/blog-feedback', blogFeedbackRoutes);
 
 const PORT = process.env.PORT || 5000;
 

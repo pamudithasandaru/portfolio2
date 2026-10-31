@@ -132,4 +132,21 @@ router.post('/bulk-upsert', async (req, res) => {
   }
 });
 
+router.delete('/:slug', async (req, res) => {
+  try {
+    const removed = await ProjectCategory.findOneAndDelete({ slug: req.params.slug });
+
+    if (!removed) {
+      return res.status(404).json({ message: 'Project category not found' });
+    }
+
+    return res.status(200).json({ message: 'Project category deleted' });
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Failed to delete project category',
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;

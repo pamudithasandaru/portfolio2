@@ -7,7 +7,11 @@ import Hero from './components/Hero';
 import About from './components/About';
 const Projects = lazy(() => import('./components/Projects'));
 const Certifications = lazy(() => import('./components/Certifications'));
+const Blogs = lazy(() => import('./components/Blogs'));
+const BlogPost = lazy(() => import('./components/BlogPost'));
 import Footer from './components/Footer';
+import { trackPageView } from './utils/analytics';
+const AdminApp = lazy(() => import('./admin/AdminApp'));
 
 const HomePage = () => {
   const location = useLocation();
@@ -69,7 +73,46 @@ const CertificationsPage = () => {
   );
 };
 
+const BlogsPage = () => {
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
+
+  return (
+    <>
+      <Blogs />
+      <Footer />
+    </>
+  );
+};
+
+const BlogPostPage = () => (
+  <>
+    <BlogPost />
+    <Footer />
+  </>
+);
+
 function AppContent() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith('/admin');
+  const lastTracked = React.useRef('');
+
+  React.useEffect(() => {
+    if (!isAdmin && lastTracked.current !== pathname) {
+      lastTracked.current = pathname;
+      trackPageView(pathname);
+    }
+  }, [pathname, isAdmin]);
+
+  if (isAdmin) {
+    return (
+      <Suspense fallback={<div className="route-loading" aria-busy="true" />}>
+        <AdminApp />
+      </Suspense>
+    );
+  }
+
   return (
     <div className="App">
       <Navbar />
@@ -78,6 +121,8 @@ function AppContent() {
         <Route path="/" element={<HomePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/certifications" element={<CertificationsPage />} />
+        <Route path="/blogs" element={<BlogsPage />} />
+        <Route path="/blogs/:slug" element={<BlogPostPage />} />
       </Routes>
       </Suspense>
     </div>

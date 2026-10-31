@@ -146,4 +146,21 @@ router.post('/bulk-upsert', async (req, res) => {
   }
 });
 
+router.delete('/:slug', async (req, res) => {
+  try {
+    const removed = await CertificationCategory.findOneAndDelete({ slug: req.params.slug });
+
+    if (!removed) {
+      return res.status(404).json({ message: 'Certification category not found' });
+    }
+
+    return res.status(200).json({ message: 'Certification category deleted' });
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Failed to delete certification category',
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;

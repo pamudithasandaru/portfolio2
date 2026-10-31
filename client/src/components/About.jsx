@@ -2,11 +2,27 @@ import React, { Suspense, lazy, useState } from 'react';
 import '../styles/About.css';
 import useScrollAnimation from '../hooks/useScrollAnimation';
 import { apiBaseUrl } from '../api/client';
-import { useLanguageToolSection, useVolunteeringExperiences } from '../api/queries';
+import { useLanguageToolSection, useSiteContent, useVolunteeringExperiences } from '../api/queries';
 import { CardListSkeleton, TagsSkeleton } from './Skeleton';
 const AlbumModal = lazy(() => import('./AlbumModal'));
 
+const EducationItem = ({ item, index }) => {
+  const ref = useScrollAnimation();
+
+  return (
+    <li className={`edu-item scroll-fade-in scroll-delay-${Math.min(index + 1, 4)}`} ref={ref}>
+      <div className="edu-marker"></div>
+      <div className="edu-card">
+        <div className="edu-year">{item.year}</div>
+        <div className="edu-role">{item.role}</div>
+        <div className="edu-meta">{item.meta}</div>
+      </div>
+    </li>
+  );
+};
+
 const About = () => {
+  const { about } = useSiteContent();
   const {
     data: volunteeringData,
     loading: volunteeringLoading,
@@ -38,10 +54,6 @@ const About = () => {
   const languageToolsRef = useScrollAnimation();
   const volunteeringRef = useScrollAnimation();
   const contactRef = useScrollAnimation();
-  const educationItemOneRef = useScrollAnimation();
-  const educationItemTwoRef = useScrollAnimation();
-  const educationItemThreeRef = useScrollAnimation();
-  const educationItemFourRef = useScrollAnimation();
 
   const handleSkillsClick = (e) => {
     e.preventDefault();
@@ -138,81 +150,40 @@ const About = () => {
     <section id="about" className="about">
       <div className="about-container">
         <div className="about-header scroll-fade-in" ref={headerRef}>
-          <h2 className="about-title">About Me</h2>
+          <h2 className="about-title">{about.title}</h2>
           <div className="title-underline"></div>
         </div>
 
         <div className="about-content scroll-slide-up" ref={contentRef}>
           <div className="about-text">
             <p className="about-intro">
-              Hello! I'm <span className="highlight">Sandaru Gunasena</span>, a passionate 
-              AI/ML enthusiast and developer dedicated to creating innovative solutions 
-              that make a difference.
-            </p>
-            
-            <p className="about-description">
-              With a strong foundation in machine learning, deep learning, and software 
-              development, I enjoy tackling complex problems and turning ideas into reality. 
-              My journey in technology has been driven by curiosity and a desire to 
-              continuously learn and grow.
+              {about.greeting} <span className="highlight">{about.name}</span>
+              {about.intro}
             </p>
 
-            <p className="about-description">
-              I specialize in building intelligent applications, developing predictive models, 
-              and creating user-friendly interfaces. When I'm not coding, you'll find me 
-              exploring the latest trends in AI research or contributing to open-source projects.
-            </p>
+            {about.paragraphs.map((paragraph, index) => (
+              <p className="about-description" key={index}>
+                {paragraph}
+              </p>
+            ))}
 
-            <div className="about-stats scroll-scale-in" ref={statsRef}>
-              <div className="stat-item">
-                <span className="stat-number">2+</span>
-                <span className="stat-label">Years Experience</span>
+            {about.stats.length > 0 && (
+              <div className="about-stats scroll-scale-in" ref={statsRef}>
+                {about.stats.map((stat, index) => (
+                  <div className="stat-item" key={index}>
+                    <span className="stat-number">{stat.number}</span>
+                    <span className="stat-label">{stat.label}</span>
+                  </div>
+                ))}
               </div>
-              <div className="stat-item">
-                <span className="stat-number">10+</span>
-                <span className="stat-label">Projects Completed</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">5+</span>
-                <span className="stat-label">Technologies</span>
-              </div>
-            </div>
+            )}
 
             <div className="education-section scroll-slide-up" ref={educationRef}>
-              <h3 className="timeline-title">Education</h3>
+              <h3 className="timeline-title">{about.educationTitle}</h3>
               <ul className="edu-timeline">
-                <li className="edu-item scroll-fade-in scroll-delay-1" ref={educationItemOneRef}>
-                  <div className="edu-marker"></div>
-                  <div className="edu-card">
-                    <div className="edu-year">2023 May - Present</div>
-                    <div className="edu-role">BSc in Computer Engineering</div>
-                    <div className="edu-meta">Faculty of Engineering, University of Ruhuna</div>
-                  </div>
-                </li>
-                <li className="edu-item scroll-fade-in scroll-delay-2" ref={educationItemTwoRef}>
-                  <div className="edu-marker"></div>
-                  <div className="edu-card">
-                    <div className="edu-year">2022 April - 2022 July</div>
-                    <div className="edu-role">Diploma in English</div>
-                    <div className="edu-meta">British Way English Academy</div>
-                  </div>
-                </li>
-                <li className="edu-item scroll-fade-in scroll-delay-3" ref={educationItemThreeRef}>
-                  <div className="edu-marker"></div>
-                  <div className="edu-card">
-                    <div className="edu-year">2018 Dec - 2019 June</div>
-                    <div className="edu-role">Diploma in Information Technology</div>
-                    <div className="edu-meta">Visiontec International, Anuradhapura</div>
-                  </div>
-                </li>
-                <li className="edu-item scroll-fade-in scroll-delay-4" ref={educationItemFourRef}>
-                  <div className="edu-marker"></div>
-                  <div className="edu-card">
-                    <div className="edu-year">2018 Dec - 2019 June</div>
-                    <div className="edu-role">Diploma in Graphic Design</div>
-                    <div className="edu-meta">Visiontec International, Anuradhapura</div>
-                  </div>
-                </li>
+                {about.education.map((item, index) => (
+                  <EducationItem item={item} index={index} key={index} />
+                ))}
               </ul>
 
               <div className="education-cta-wrap scroll-scale-in" ref={ctaRef}>
@@ -364,10 +335,8 @@ const About = () => {
             </div>
 
             <div className="contact-section scroll-slide-up" ref={contactRef}>
-              <h3 className="timeline-title">Discuss New Projects</h3>
-              <p className="contact-section-intro">
-                Have an idea, feedback, or collaboration opportunity? Send me a quick message and I will reply by email.
-              </p>
+              <h3 className="timeline-title">{about.contactHeading}</h3>
+              <p className="contact-section-intro">{about.contactIntro}</p>
 
               <form className="contact-form-card" onSubmit={handleContactSubmit}>
                 <label className="contact-label" htmlFor="fromEmail">
