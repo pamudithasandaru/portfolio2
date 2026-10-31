@@ -1,7 +1,8 @@
-const LOCAL_RASTER = /^\/images\/.+\.(png|jpe?g)$/i;
+const LOCAL_RASTER = /^\/(?:blog-)?images\/.+\.(png|jpe?g)$/i;
 
 // CSS background value that prefers the WebP variant of a local image.
-export const cssImage = (src) => {
+// `width` picks the generated size: 480, 960, or 1600 (the full-size .webp).
+export const cssImage = (src, width = 960) => {
   if (!src) {
     return 'none';
   }
@@ -10,6 +11,6 @@ export const cssImage = (src) => {
     return `url(${src})`;
   }
 
-  const webp = src.replace(/\.(png|jpe?g)$/i, '-960.webp');
+  const webp = src.replace(/\.(png|jpe?g)$/i, width === 1600 ? '.webp' : `-${width}.webp`);
   return `image-set(url(${webp}) type("image/webp"), url(${src}))`;
 };

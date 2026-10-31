@@ -14,6 +14,7 @@
   --fill-soft: #636060;
   --fill-muted: #7a7878;
   --focus-ring: #1a73e8;
+  --signal: #3b5bdb;
   --shimmer-a: #ececec;
   --shimmer-b: #f5f5f5;
   --font-body: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -35,6 +36,7 @@
   --fill-soft: #5c5858;
   --fill-muted: #6d6969;
   --focus-ring: #8ab4f8;
+  --signal: #7c9cff;
   --shimmer-a: #2a2828;
   --shimmer-b: #363333;
 }

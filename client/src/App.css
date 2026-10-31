@@ -21,6 +21,8 @@ body {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
+  /* clip (unlike hidden) doesn't create a scroll container, so position: sticky keeps working */
+  overflow-x: clip;
   background-color: var(--bg);
 }
 

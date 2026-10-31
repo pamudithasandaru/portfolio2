@@ -1,0 +1,560 @@
+/* =====================================================================
+   Blog design pass: backdrop, featured card, cover art, progress bar,
+   table of contents, code blocks, share row, pager.
+   Loaded after Blog.css, so these rules refine the base styles.
+   ===================================================================== */
+
+/* Soft static backdrop: a faint dot grid (echoing the hero) and a gentle glow */
+.blog-page {
+  position: relative;
+  overflow-x: clip;
+}
+
+.blog-page::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 480px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 100% at 50% 0%, color-mix(in srgb, var(--signal) 10%, transparent), transparent 70%),
+    radial-gradient(color-mix(in srgb, var(--ink-muted) 60%, transparent) 1px, transparent 1.4px) 0 0 / 28px 28px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+  opacity: 0.55;
+}
+
+.blog-container,
+.blog-shell,
+.blog-post-container {
+  position: relative;
+  z-index: 1;
+}
+
+.blog-eyebrow {
+  margin: 0 0 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* ---------- Cards ---------- */
+
+.blog-card-cover {
+  position: relative;
+}
+
+.blog-card-badge {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--fill);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.blog-card-foot {
+  margin-top: auto;
+  padding-top: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.blog-card-foot .blog-card-stats {
+  margin: 0;
+  padding: 0;
+}
+
+.blog-card-cta {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+.blog-card-cta svg {
+  transition: transform 0.25s ease;
+}
+
+.blog-card:hover .blog-card-cta svg,
+.blog-card:focus-visible .blog-card-cta svg {
+  transform: translateX(5px);
+}
+
+.blog-card.is-featured .blog-card-body h2 {
+  font-size: 1.7rem;
+  line-height: 1.25;
+}
+
+@media (min-width: 800px) {
+  .blog-card.is-featured {
+    grid-column: 1 / -1;
+    flex-direction: row;
+  }
+
+  .blog-card.is-featured .blog-card-cover {
+    flex: 0 0 55%;
+    aspect-ratio: auto;
+    min-height: 340px;
+  }
+
+  .blog-card.is-featured .blog-card-body {
+    justify-content: center;
+    padding: 2rem 2.2rem;
+    gap: 0.8rem;
+  }
+
+  .blog-card.is-featured .blog-card-summary {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    font-size: 1rem;
+  }
+}
+
+/* Generated cover for posts without an image */
+.blog-cover-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at var(--bx, 50%) var(--by, 40%), color-mix(in srgb, var(--signal) 26%, transparent), transparent 58%),
+    radial-gradient(color-mix(in srgb, var(--ink-muted) 50%, transparent) 1px, transparent 1.4px) 0 0 / 18px 18px,
+    linear-gradient(135deg, var(--surface-2), var(--border));
+}
+
+.blog-cover-art-tag {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.blog-cover-art-letter {
+  position: absolute;
+  left: 1.2rem;
+  bottom: -0.9rem;
+  font-size: 7.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: color-mix(in srgb, var(--ink) 14%, transparent);
+  user-select: none;
+}
+
+/* ---------- Post layout ---------- */
+
+.blog-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 3rem;
+}
+
+.blog-article {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.blog-toc {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .blog-shell {
+    grid-template-columns: minmax(0, 760px) 240px;
+    justify-content: center;
+  }
+
+  .blog-toc {
+    display: block;
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding-top: 3.4rem;
+  }
+
+  .blog-toc-inline {
+    display: none;
+  }
+}
+
+.blog-toc > p,
+.blog-toc-inline summary {
+  margin: 0 0 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.blog-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 2px solid var(--border);
+}
+
+.blog-toc-list a {
+  display: block;
+  margin-left: -2px;
+  padding: 0.3rem 0.9rem;
+  border-left: 2px solid transparent;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.blog-toc-list .is-sub a {
+  padding-left: 1.7rem;
+  font-size: 0.82rem;
+}
+
+.blog-toc-list a:hover {
+  color: var(--ink-strong);
+}
+
+.blog-toc-list a.is-active {
+  color: var(--ink-strong);
+  font-weight: 700;
+  border-left-color: var(--signal);
+}
+
+.blog-toc-inline {
+  margin: 0 0 2rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.blog-toc-inline summary {
+  margin: 0;
+  cursor: pointer;
+}
+
+.blog-toc-inline[open] summary {
+  margin-bottom: 0.8rem;
+}
+
+/* ---------- Progress bar ---------- */
+
+.blog-progress {
+  position: fixed;
+  top: 65px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 90;
+  pointer-events: none;
+}
+
+.blog-progress span {
+  display: block;
+  height: 100%;
+  background: var(--signal);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ---------- Byline ---------- */
+
+.blog-byline {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.4rem;
+}
+
+.blog-byline img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  border: 2px solid var(--border);
+}
+
+.blog-byline-name {
+  margin: 0;
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+.blog-byline .blog-post-meta {
+  margin-top: 0.15rem;
+}
+
+/* ---------- Prose polish ---------- */
+
+.blog-prose > p:first-child {
+  font-size: 1.22rem;
+  line-height: 1.7;
+  color: var(--ink-strong);
+}
+
+.blog-prose h2,
+.blog-prose h3 {
+  scroll-margin-top: 96px;
+}
+
+.blog-prose blockquote {
+  position: relative;
+  padding: 1rem 1.2rem 1rem 3.1rem;
+}
+
+.blog-prose blockquote::before {
+  content: '\201C';
+  position: absolute;
+  left: 0.95rem;
+  top: 0.15rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.8rem;
+  line-height: 1;
+  color: var(--ink-muted);
+}
+
+/* ---------- Code blocks ---------- */
+
+.blog-code {
+  margin: 0 0 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.blog-code-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.9rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.blog-code-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0.15rem 0.3rem;
+  border-radius: 5px;
+}
+
+.blog-code-bar button:hover {
+  color: var(--ink-strong);
+}
+
+.blog-prose .blog-code pre {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* ---------- Share row ---------- */
+
+.blog-share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2.6rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+.blog-share > span {
+  margin-right: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.blog-share button,
+.blog-share a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.blog-share button:hover,
+.blog-share a:hover {
+  border-color: var(--ink-soft);
+  color: var(--ink-strong);
+  transform: translateY(-1px);
+}
+
+/* ---------- Older / newer posts ---------- */
+
+.blog-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2.6rem;
+}
+
+.blog-pager-link {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.blog-pager-link:hover {
+  border-color: var(--ink-muted);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+.blog-pager-link.is-next {
+  text-align: right;
+}
+
+.blog-pager-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.blog-pager-link.is-next .blog-pager-label {
+  justify-content: flex-end;
+}
+
+.blog-pager-link strong {
+  color: var(--ink-strong);
+  line-height: 1.35;
+}
+
+@media (max-width: 600px) {
+  .blog-pager {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-cover-art-letter {
+    font-size: 5.5rem;
+  }
+}
+
+/* On wide screens the article sits beside the table of contents; keep what follows in the same column */
+@media (min-width: 1180px) {
+  .blog-post-container {
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: minmax(0, 760px) 240px;
+    column-gap: 3rem;
+    justify-content: center;
+  }
+
+  .blog-post-container > * {
+    grid-column: 1;
+  }
+}
+
+/* ---------- Embedded video ---------- */
+
+.blog-video {
+  margin: 1.8rem 0;
+}
+
+.blog-video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.blog-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ---------- Cover image as a faded backdrop behind the post header ---------- */
+
+.blog-hero-bg {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 620px;
+  z-index: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  opacity: 0.14;
+  filter: blur(3px);
+  transform: scale(1.04); /* hides the blurred edge */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 85%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 85%);
+}
+
+:root[data-theme='dark'] .blog-hero-bg {
+  opacity: 0.2;
+}
+
+@media (max-width: 600px) {
+  .blog-hero-bg {
+    height: 460px;
+  }
+}

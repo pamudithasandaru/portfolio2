@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LOCAL_RASTER = /^\/images\/.+\.(png|jpe?g)$/i;
+const LOCAL_RASTER = /^\/(?:blog-)?images\/.+\.(png|jpe?g)$/i;
 const SIZES = [480, 960];
 
 // Local /images/* files have WebP variants (see scripts/optimize-images.mjs).

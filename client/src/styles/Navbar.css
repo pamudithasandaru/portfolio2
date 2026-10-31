@@ -145,7 +145,8 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 768px) {
+/* Five links need more room, so switch to the hamburger menu a little earlier */
+@media (max-width: 1000px) {
   .hamburger {
     display: flex;
   }
