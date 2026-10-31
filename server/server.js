@@ -52,10 +52,16 @@ app.get('/api', (req, res) => {
   res.json({ message: 'Portfolio API is running' });
 });
 
-// Let Vercel's CDN cache public GET responses; serve stale while revalidating
+// Lightweight endpoint for uptime pingers (keeps a free-tier host awake)
+app.get('/health', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.status(200).json({ status: 'ok' });
+});
+
+// Browser cache for GET responses (max-age); CDN cache if one is in front (s-maxage)
 app.use('/api', (req, res, next) => {
   if (req.method === 'GET') {
-    res.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400');
   }
   next();
 });
