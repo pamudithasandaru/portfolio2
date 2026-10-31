@@ -21,7 +21,7 @@
 
 .hero-content {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 6rem;
   align-items: center;
   padding-left: 120px;
@@ -60,12 +60,25 @@
 }
 
 .hero-subtitle-text {
+  position: relative;
   display: inline-block;
+  vertical-align: bottom;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  border-right: 2px solid var(--ink);
-  animation: typewriterLoop 5.4s steps(28, end) 1.2s infinite, blinkCursor 0.7s step-end infinite;
+  /* Reveal with clip-path so the box keeps its full size and never reflows the layout */
+  animation: typewriterLoop 5.4s steps(28, end) 1.2s infinite;
+}
+
+.hero-subtitle-text::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: var(--ink);
+  animation: typewriterCursor 5.4s steps(28, end) 1.2s infinite, blinkCursor 0.7s step-end infinite;
 }
 
 /* Current Role */
@@ -267,25 +280,39 @@
 @keyframes typewriterLoop {
   0%,
   10% {
-    width: 0;
+    clip-path: inset(0 100% 0 0);
   }
   45%,
   65% {
-    width: 28ch;
+    clip-path: inset(0 0 0 0);
   }
   100% {
-    width: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+@keyframes typewriterCursor {
+  0%,
+  10% {
+    left: 0;
+  }
+  45%,
+  65% {
+    left: calc(100% - 2px);
+  }
+  100% {
+    left: 0;
   }
 }
 
 @keyframes blinkCursor {
   0%,
   49% {
-    border-right-color: var(--ink);
+    opacity: 1;
   }
   50%,
   100% {
-    border-right-color: transparent;
+    opacity: 0;
   }
 }
 
@@ -400,9 +427,6 @@
     margin-bottom: 1.5rem;
   }
 
-  .hero-subtitle-text {
-    animation: typewriterLoopMobile 5.4s steps(28, end) 1.2s infinite, blinkCursor 0.7s step-end infinite;
-  }
 
   .hero-actions {
     margin-bottom: 1.8rem;
@@ -458,9 +482,6 @@
     margin-bottom: 1.2rem;
   }
 
-  .hero-subtitle-text {
-    animation: typewriterLoopMobile 5.4s steps(28, end) 1.2s infinite, blinkCursor 0.7s step-end infinite;
-  }
 
   .hire-btn {
     padding: 0.72rem 1rem 0.72rem 1.2rem;
@@ -494,16 +515,3 @@
   }
 }
 
-@keyframes typewriterLoopMobile {
-  0%,
-  10% {
-    width: 0;
-  }
-  45%,
-  65% {
-    width: min(28ch, 100%);
-  }
-  100% {
-    width: 0;
-  }
-}

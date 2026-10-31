@@ -945,3 +945,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 600px) {
+  .adm-sidebar nav a,
+  .adm-sidebar nav button {
+    flex: 1 1 auto;
+  }
+}

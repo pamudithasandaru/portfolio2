@@ -55,6 +55,17 @@ code {
     monospace;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
 picture {
   display: contents;
 }

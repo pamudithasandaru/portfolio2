@@ -24,7 +24,7 @@
 }
 
 .about-title {
-  font-size: 3rem;
+  font-size: clamp(2rem, 7vw, 3rem);
   color: var(--ink);
   margin: 0;
   font-weight: 700;
