@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   FaCertificate,
   FaExternalLinkAlt,
@@ -8,6 +8,9 @@ import {
   FaCircle,
 } from 'react-icons/fa';
 import useScrollAnimation from '../hooks/useScrollAnimation';
+import OptimizedImage from './OptimizedImage';
+import { GridSkeleton } from './Skeleton';
+import { useCertificationCategories } from '../api/queries';
 import '../styles/Certifications.css';
 
 const formatDate = (value) => {
@@ -24,52 +27,12 @@ const formatDate = (value) => {
 };
 
 const Certifications = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [activeCategorySlug, setActiveCategorySlug] = useState('');
+  const { data, loading, error } = useCertificationCategories();
+  const categories = useMemo(() => data ?? [], [data]);
+  const [selectedSlug, setActiveCategorySlug] = useState('');
+  const activeCategorySlug = selectedSlug || categories[0]?.slug || '';
   const [searchTerm, setSearchTerm] = useState('');
   const sectionRef = useScrollAnimation();
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
-
-    const fetchCertifications = async () => {
-      try {
-        setLoading(true);
-        setError('');
-
-        const response = await fetch(`${apiBaseUrl}/api/certification-categories`, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
-        const normalizedData = Array.isArray(data) ? data : [];
-        setCategories(normalizedData);
-
-        if (normalizedData.length > 0) {
-          setActiveCategorySlug(normalizedData[0].slug);
-        }
-      } catch (fetchError) {
-        if (fetchError.name !== 'AbortError') {
-          setError('Unable to load certifications right now.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCertifications();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
 
   const activeCategory = useMemo(
     () => categories.find((category) => category.slug === activeCategorySlug) || null,
@@ -162,7 +125,7 @@ const Certifications = () => {
             </div>
           </header>
 
-          {loading && <p className="certifications-feedback">Loading certifications...</p>}
+          {loading && <GridSkeleton count={6} label="Loading certifications" />}
           {!loading && error && <p className="certifications-feedback certifications-feedback-error">{error}</p>}
 
           {!loading && !error && (
@@ -175,10 +138,10 @@ const Certifications = () => {
                 >
                   <div className="certificate-image-wrap">
                     {certificate.mediaFileUrl ? (
-                      <img
+                      <OptimizedImage
                         src={certificate.mediaFileUrl}
                         alt={`${certificate.certificateTitle} certificate`}
-                        loading="lazy"
+                        sizes="(max-width: 768px) 100vw, 380px"
                       />
                     ) : (
                       <div className="certificate-image-fallback">

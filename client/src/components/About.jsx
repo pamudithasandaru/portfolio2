@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import '../styles/About.css';
 import useScrollAnimation from '../hooks/useScrollAnimation';
-import AlbumModal from './AlbumModal';
+import { apiBaseUrl } from '../api/client';
+import { useLanguageToolSection, useVolunteeringExperiences } from '../api/queries';
+import { CardListSkeleton, TagsSkeleton } from './Skeleton';
+const AlbumModal = lazy(() => import('./AlbumModal'));
 
 const About = () => {
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
-  const [volunteeringExperiences, setVolunteeringExperiences] = useState([]);
-  const [volunteeringLoading, setVolunteeringLoading] = useState(true);
-  const [volunteeringError, setVolunteeringError] = useState('');
-  const [languageToolSection, setLanguageToolSection] = useState(null);
-  const [languageToolLoading, setLanguageToolLoading] = useState(true);
-  const [languageToolError, setLanguageToolError] = useState('');
+  const {
+    data: volunteeringData,
+    loading: volunteeringLoading,
+    error: volunteeringError,
+  } = useVolunteeringExperiences();
+  const volunteeringExperiences = volunteeringData ?? [];
+  const {
+    data: languageToolSection,
+    loading: languageToolLoading,
+    error: languageToolError,
+  } = useLanguageToolSection();
   const [albumModalOpen, setAlbumModalOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [contactForm, setContactForm] = useState({
@@ -35,65 +42,6 @@ const About = () => {
   const educationItemTwoRef = useScrollAnimation();
   const educationItemThreeRef = useScrollAnimation();
   const educationItemFourRef = useScrollAnimation();
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchVolunteeringExperiences = async () => {
-      try {
-        setVolunteeringLoading(true);
-        setVolunteeringError('');
-
-        const response = await fetch(`${apiBaseUrl}/api/volunteering-experiences`, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
-        setVolunteeringExperiences(Array.isArray(data) ? data : []);
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          setVolunteeringError('Unable to load volunteering experiences right now.');
-        }
-      } finally {
-        setVolunteeringLoading(false);
-      }
-    };
-
-    const fetchLanguageToolSection = async () => {
-      try {
-        setLanguageToolLoading(true);
-        setLanguageToolError('');
-
-        const response = await fetch(`${apiBaseUrl}/api/language-tool-sections`, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
-        setLanguageToolSection(data || null);
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          setLanguageToolError('Unable to load languages and tools right now.');
-        }
-      } finally {
-        setLanguageToolLoading(false);
-      }
-    };
-
-    fetchVolunteeringExperiences();
-    fetchLanguageToolSection();
-
-    return () => {
-      controller.abort();
-    };
-  }, [apiBaseUrl]);
 
   const handleSkillsClick = (e) => {
     e.preventDefault();
@@ -281,9 +229,7 @@ const About = () => {
             <div className="language-tools-section scroll-slide-up" ref={languageToolsRef}>
               <h3 className="timeline-title">Languages and Tools</h3>
 
-              {languageToolLoading && (
-                <p className="language-tools-feedback">Loading languages and tools...</p>
-              )}
+              {languageToolLoading && <TagsSkeleton label="Loading languages and tools" />}
 
               {!languageToolLoading && languageToolError && (
                 <p className="language-tools-feedback language-tools-feedback-error">{languageToolError}</p>
@@ -343,9 +289,7 @@ const About = () => {
             <div className="volunteering-section scroll-slide-up" ref={volunteeringRef}>
               <h3 className="timeline-title">Volunteering Experiences</h3>
 
-              {volunteeringLoading && (
-                <p className="volunteering-feedback">Loading volunteering experiences...</p>
-              )}
+              {volunteeringLoading && <CardListSkeleton count={3} label="Loading volunteering experiences" />}
 
               {!volunteeringLoading && volunteeringError && (
                 <p className="volunteering-feedback volunteering-feedback-error">{volunteeringError}</p>
@@ -478,6 +422,7 @@ const About = () => {
       </div>
 
       {selectedExperience && (
+        <Suspense fallback={null}>
         <AlbumModal
           isOpen={albumModalOpen}
           onClose={handleCloseAlbumModal}
@@ -499,6 +444,7 @@ const About = () => {
           }
           organizationName={selectedExperience.organization}
         />
+        </Suspense>
       )}
     </section>
   );

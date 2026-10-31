@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FaMoon, FaSun } from 'react-icons/fa';
+import useTheme from '../hooks/useTheme';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
+  const routerNavigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  const navigate = (to) => routerNavigate(to, { viewTransition: true });
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -51,6 +55,7 @@ const Navbar = () => {
           className="hamburger"
           onClick={toggleMenu}
           aria-label="Toggle navigation menu"
+          aria-expanded={isOpen}
         >
           <span className={isOpen ? 'active' : ''}></span>
           <span className={isOpen ? 'active' : ''}></span>
@@ -72,10 +77,21 @@ const Navbar = () => {
           </li>
         </ul>
 
-        <div className="contact-email">
-          <a href="/#contact" className="email-link" onClick={(e) => handleNavClick(e, 'contact')}>
-            pamudithasandaru2002@gmail.com
-          </a>
+        <div className="navbar-actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+            title={theme === 'dark' ? 'Light theme' : 'Dark theme'}
+          >
+            {theme === 'dark' ? <FaSun aria-hidden="true" /> : <FaMoon aria-hidden="true" />}
+          </button>
+          <div className="contact-email">
+            <a href="/#contact" className="email-link" onClick={(e) => handleNavClick(e, 'contact')}>
+              pamudithasandaru2002@gmail.com
+            </a>
+          </div>
         </div>
       </div>
     </nav>

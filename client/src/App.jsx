@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import './styles/ScrollAnimations.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
-import Projects from './components/Projects';
-import Certifications from './components/Certifications';
+const Projects = lazy(() => import('./components/Projects'));
+const Certifications = lazy(() => import('./components/Certifications'));
 import Footer from './components/Footer';
 
 const HomePage = () => {
@@ -73,11 +73,13 @@ function AppContent() {
   return (
     <div className="App">
       <Navbar />
+      <Suspense fallback={<div className="route-loading" aria-busy="true" />}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/certifications" element={<CertificationsPage />} />
       </Routes>
+      </Suspense>
     </div>
   );
 }

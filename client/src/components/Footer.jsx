@@ -77,7 +77,7 @@ const Footer = () => {
             </ul>
 
             <div className="footer-socials" aria-label="Social links">
-              <a href="www.linkedin.com/in/pamuditha-sandaru-4561ab280" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/pamuditha-sandaru-4561ab280" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <FaLinkedin />
               </a>
               <a href="https://github.com/pamudithasandaru" target="_blank" rel="noopener noreferrer" aria-label="GitHub">

@@ -1,7 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FaSearch, FaArrowLeft, FaGithub, FaExternalLinkAlt, FaPlay } from 'react-icons/fa';
 import useScrollAnimation from '../hooks/useScrollAnimation';
 import ProjectNavigationSidebar from './ProjectNavigationSidebar';
+import OptimizedImage from './OptimizedImage';
+import { CardListSkeleton } from './Skeleton';
+import { useProjectCategories } from '../api/queries';
+import { cssImage } from '../utils/images';
 import '../styles/Projects.css';
 
 const getEmbeddableUrl = (url = '') => {
@@ -28,49 +32,13 @@ const getEmbeddableUrl = (url = '') => {
 };
 
 const Projects = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { data, loading, error } = useProjectCategories();
+  const categories = useMemo(() => data ?? [], [data]);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategorySlug, setActiveCategorySlug] = useState('');
   const [activeVideoProject, setActiveVideoProject] = useState(null);
 
   const sectionRef = useScrollAnimation();
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
-
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        setError('');
-
-        const response = await fetch(`${apiBaseUrl}/api/project-categories`, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
-        setCategories(Array.isArray(data) ? data : []);
-      } catch (fetchError) {
-        if (fetchError.name !== 'AbortError') {
-          setError('Unable to load project categories right now.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
 
   const filteredCategories = useMemo(() => {
     const normalized = searchTerm.trim().toLowerCase();
@@ -167,7 +135,7 @@ const Projects = () => {
           <div className="title-underline" />
         </header>
 
-        {loading && <p className="projects-feedback">Loading projects...</p>}
+        {loading && <CardListSkeleton count={3} label="Loading projects" />}
         {!loading && error && <p className="projects-feedback projects-feedback-error">{error}</p>}
 
         {!loading && !error && !activeCategory && (
@@ -256,7 +224,7 @@ const Projects = () => {
                       <aside
                         className="project-card-visual"
                         style={{
-                          '--project-image': project.coverImageUrl ? `url(${project.coverImageUrl})` : 'none',
+                          '--project-image': cssImage(project.coverImageUrl),
                         }}
                       >
                         <button
@@ -267,7 +235,7 @@ const Projects = () => {
                           title={project.demoVideoUrl ? 'Watch demo video' : 'No demo video available'}
                         >
                           {project.videoThumbnailUrl ? (
-                            <img src={project.videoThumbnailUrl} alt={`${project.title} demo thumbnail`} />
+                            <OptimizedImage src={project.videoThumbnailUrl} alt={`${project.title} demo thumbnail`} sizes="(max-width: 768px) 100vw, 320px" />
                           ) : (
                             <div className="project-video-thumb-placeholder">Demo Preview</div>
                           )}

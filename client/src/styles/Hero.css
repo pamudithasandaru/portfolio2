@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+  background: var(--bg);
   position: relative;
   overflow: hidden;
   margin-top: -100px;
@@ -68,7 +68,7 @@
 
 .hero-greeting {
   font-size: 5rem;
-  color: #474343;
+  color: var(--ink);
   margin: 0 0 0.3rem;
   font-weight: 700;
   line-height: 1;
@@ -77,7 +77,7 @@
 
 .hero-title {
   font-size: 3.8rem;
-  color: #474343;
+  color: var(--ink);
   margin: 0 0 0.8rem;
   font-weight: 700;
   letter-spacing: -0.5px;
@@ -87,7 +87,7 @@
 
 .hero-subtitle {
   font-size: 1.9rem;
-  color: #474343;
+  color: var(--ink);
   margin: 0 0 2.5rem;
   font-weight: 600;
   animation: revealUp 0.75s ease-out 0.42s both;
@@ -98,7 +98,7 @@
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  border-right: 2px solid #474343;
+  border-right: 2px solid var(--ink);
   animation: typewriterLoop 5.4s steps(28, end) 1.2s infinite, blinkCursor 0.7s step-end infinite;
 }
 
@@ -122,7 +122,7 @@
 .hero-role-text {
   font-size: 1.05rem;
   font-weight: 600;
-  color: #474343;
+  color: var(--ink);
 }
 
 /* Hero Actions - Hire Button */
@@ -132,7 +132,7 @@
 }
 
 .hire-btn {
-  background-color: #474343;
+  background-color: var(--fill);
   color: #fff;
   border: none;
   border-radius: 35px;
@@ -162,7 +162,7 @@
 }
 
 .hire-btn:hover {
-  background-color: #5a5a5a;
+  background-color: var(--fill-soft);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
@@ -184,7 +184,7 @@
 .toggle-circle {
   width: 22px;
   height: 22px;
-  background-color: #fff;
+  background-color: var(--surface);
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
@@ -206,7 +206,7 @@
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  background-color: #474343;
+  background-color: var(--fill);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -230,7 +230,7 @@
 }
 
 .social-link:hover {
-  background-color: #5a5a5a;
+  background-color: var(--fill-soft);
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
@@ -247,12 +247,12 @@
 .image-placeholder {
   width: 570px;
   height: 570px;
-  background: #fff;
+  background: var(--surface);
   border-radius: 50%;
   overflow: hidden;
   position: relative;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-  border: 8px solid #f5f5f5;
+  border: 8px solid var(--border);
   margin-left: auto;
   animation: heroImageIn 0.95s ease-out 0.55s both, floatImage 4.2s ease-in-out 1.7s infinite;
 }
@@ -315,7 +315,7 @@
 @keyframes blinkCursor {
   0%,
   49% {
-    border-right-color: #474343;
+    border-right-color: var(--ink);
   }
   50%,
   100% {
@@ -566,4 +566,19 @@
   100% {
     width: 0;
   }
+}
+
+/* The hero artwork is a light image in both themes, so keep its text on the light palette. */
+:root[data-theme='dark'] .hero {
+  --ink: #474343;
+  --ink-strong: #2f2c2c;
+  --ink-soft: #636060;
+  --ink-muted: #7a7878;
+  --fill: #474343;
+  --fill-strong: #2f2c2c;
+  --fill-soft: #636060;
+  --surface: #ffffff;
+  --surface-2: #f5f5f5;
+  --border: #e8e8e8;
+  color-scheme: light;
 }

@@ -1,7 +1,7 @@
 .footer {
   position: relative;
   margin-top: 4rem;
-  background: linear-gradient(165deg, #474343 0%, #575353 55%, #636060 100%);
+  background: linear-gradient(165deg, var(--fill) 0%, var(--fill-soft) 55%, var(--fill-soft) 100%);
   color: #f4f4f4;
 }
 
