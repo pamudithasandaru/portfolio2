@@ -22,7 +22,24 @@ const app = express();
 app.set('trust proxy', 1);
 
 // Middleware
-app.use(cors());
+// Comma-separated list of frontend origins allowed to call the API.
+// Unset means allow all (local development).
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
+app.use(
+  cors(
+    allowedOrigins.length
+      ? {
+          origin: (origin, callback) =>
+            // No Origin header means a non-browser client (curl, uptime monitor)
+            callback(null, !origin || allowedOrigins.includes(origin)),
+        }
+      : undefined
+  )
+);
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
